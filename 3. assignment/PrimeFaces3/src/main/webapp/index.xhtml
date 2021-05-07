@@ -1,0 +1,64 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <p:tabView>
+            <p:tab title="Form">
+                <h:form>
+                    <h:panelGrid columns="6">
+                        <p:spinner id="firstNumber" min="0" max="42" value="#{calculationBean.firstNumber}" />
+                        <p>+</p>
+                        <p:spinner id="secondNumber" min="0" max="42" value="#{calculationBean.secondNumber}"/>
+                        <p:commandButton id="calcButton" value="Calculate" update="calculation curDate growl" action="#{calculationBean.calculate()}"></p:commandButton>
+                        <p>=</p>
+                        <h:outputText id="calculation" value="#{calculationBean.result}"></h:outputText>
+                    </h:panelGrid>                
+                <h:outputText id="curDate" value="#{calculationBean.getCurrentDateTime()}"></h:outputText>
+                <p:growl id="growl"/>
+                </h:form>
+            </p:tab>
+            
+            <p:tab id="table" title="Table">
+                <h:form>                    
+                    <h:panelGrid columns="7">
+                        <h:outputLabel for="fname" value="First name:" />
+                        <h:inputText id="fname" required="true" value="#{studentBean.firstName}" />
+                        
+                        <h:outputLabel for="lname" value="Last name:" />
+                        <h:inputText id="lname" required="true" value="#{studentBean.lastName}" />
+                        
+                        <h:outputLabel for="avg" value="Average:" />
+                        <h:inputText id="avg" required="true" value="#{studentBean.avg}" />
+                        
+                        <p:commandButton id="addStudent" value="Add student" update="studentTable" action="#{studentBean.addStudent()}"/>
+                    </h:panelGrid>
+
+                    <p:dataTable id="studentTable" var="student" value="#{studentBean.students}" paginator="true" rows="10">
+                        <p:column headerText="First name">
+                            <h:outputText value="#{student.fname}"/>
+                        </p:column>
+
+                        <p:column headerText="Last name" sortBy="#{student.lname}">
+                            <h:outputText value="#{student.lname}"/>
+                        </p:column>
+
+                        <p:column headerText="Average" sortBy="#{student.avg}">
+                            <h:outputText value="#{student.avg}"/>
+                        </p:column>
+                    </p:dataTable>                     
+                </h:form>
+            </p:tab>
+            
+            <p:tab title="Chart">
+                <p:chart type="line" model="#{chartBean.model}" widgetVar="chart"/>
+                <p:commandButton type="button" value="Reset zoom" onclick="PF('chart').resetZoom()"/>
+            </p:tab>
+        </p:tabView>
+    </h:body>
+</html>
+
